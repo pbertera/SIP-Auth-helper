@@ -137,6 +137,9 @@ You can specify all the challenge response data using the script options or you 
                    help='SIP cleartext password')
 
     options, args = opt.parse_args(sys.argv[1:])
+    if len(args) != 1:
+        opt.print_help()
+        sys.exit(-1)
     if args[0] not in ('check', 'crack'):
         print("ERROR: action must be one of crack or check")
         sys.exit(-1)
@@ -153,24 +156,24 @@ You can specify all the challenge response data using the script options or you 
 
     if options.debug:
         print('Challenge response: {}'.format(options.response))
-    if auth.username:
+    if not auth.username:
         print("ERROR: username is missing")
         sys.exit(-1)
-    if auth.realm:
+    if not auth.realm:
         print("ERROR: realm is missing")
         sys.exit(-1)
-    if auth.uri:
+    if not auth.uri:
         print("ERROR: uri is missing")
         sys.exit(-1)
-    if auth.method:
+    if not auth.method:
         print("ERROR: method missing")
         sys.exit(-1)
-    if auth.nonce:
+    if not auth.nonce:
         print("ERROR: nonce missing")
         sys.exit(-1)
 
     if action == 'check':
-        if auth.password:
+        if not auth.password:
             print("ERROR: password is missing")
             sys.exit(-1)
         else:
@@ -183,7 +186,7 @@ You can specify all the challenge response data using the script options or you 
             print("ERROR: the password {} do not match".format(options.password))
 
     elif action == 'crack':
-        if auth.response:
+        if not auth.response:
             print("ERROR: response missing")
             sys.exit(-1)
         else:
