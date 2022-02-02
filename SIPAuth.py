@@ -46,7 +46,7 @@ class SIPAuth:
         elif self.algorithm == 'SHA-512':
             hashfunc = hashlib.sha512
 
-        return hashfunc(string).hexdigest()
+        return hashfunc(string.encode('utf-8')).hexdigest()
 
     def calculateHash(self, password=None):
         if password == None:
@@ -76,8 +76,8 @@ class SIPAuth:
         for elem in list:
             md = rx_kv.search(elem)
             if md:
-                value = string.strip(md.group(2), '" ')
-                key = string.strip(md.group(1))
+                value = md.group(2).strip('" ')
+                key = md.group(1).strip()
                 if key == "uri":
                     self.uri = value
                 elif key == "response":
